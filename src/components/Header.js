@@ -7,25 +7,63 @@ import movie from '../images/movie-icon.svg'
 import original from '../images/original-icon.svg'
 import series from '../images/series-icon.svg'
 import watchlist from '../images/watchlist-icon.svg'
+import {auth, provider} from '../firebase';
+import {useHistory} from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux'
+import {selectUserName, selectUserPhoto, setUserLoginDetails, setSignOutState} from '../features/userSlice'
 const Header = () => {
+    const dispatch = useDispatch()
+    const history = useHistory();
+    const username = useSelector(selectUserName)
+    const userphoto = useSelector(selectUserPhoto)
+    const handleAuth = () =>{
+                if (username){
+                    auth.signOut();
+                    dispatch(
+                        setSignOutState()
+                    )
+                }else{
+                    auth.signInWithPopup(provider).then((result) =>{
+                        dispatch(setUserLoginDetails({
+                            name : result.user.displayName,
+                            email : result.user.email,
+                            photo : result.user.photoURL
+                        }))
+                    }).catch((error) => {
+                        alert(error.message)
+                    }
+                    )
+                }
+    }
     return (
         <Container>
             <Nav>
                 <Logo>
                     <img src={logo} alt=""/>
                 </Logo>
-                <Menu>
-                    <a><img src={home} alt=""/><span>Home</span></a>
-                    <a><img src={search} alt=""/><span>Search</span></a>
-                    <a><img src={watchlist} alt=""/><span>Watchlist</span></a>
-                    <a><img src={original} alt=""/><span>Original</span></a>
-                    <a><img src={movie} alt=""/><span>Movie</span></a>
-                    <a><img src={series} alt=""/><span>Series</span></a>
-                </Menu>
+                {username ?            
+                            <Menu>
+                                <a><img src={home} alt=""/><span>Home</span></a>
+                                <a><img src={search} alt=""/><span>Search</span></a>
+                                <a><img src={watchlist} alt=""/><span>Watchlist</span></a>
+                                <a><img src={original} alt=""/><span>Original</span></a>
+                                <a><img src={movie} alt=""/><span>Movie</span></a>
+                                <a><img src={series} alt=""/><span>Series</span></a>
+                            </Menu>
+                            :
+                            <> </>
+                }
             </Nav>
-            <SignupButton>
+            {username ? 
+                <Signout onClick={handleAuth}>
+                    <img src={userphoto} alt=""/>
+                    <span>{username}</span>
+                </Signout>
+                : 
+            <SignupButton onClick={handleAuth}>
                 LOGIN
             </SignupButton>
+        }
         </Container>
     )
 }
@@ -59,6 +97,7 @@ export const Logo = styled.a`
     width: 100px;
     margin-right: 25px;
     height: auto;
+    cursor: pointer;
     img{
         display: block;
         width: 100%
@@ -130,6 +169,7 @@ export const SignupButton = styled.a`
     letter-spacing: 1.5px;
     color: hsla(0, 0, 95.3%, 1);
     border-radius: 4px;
+    cursor: pointer;
     transition: all .2s;
     border: 1px solid #f9f9f9;
 
@@ -137,6 +177,23 @@ export const SignupButton = styled.a`
         background-color: #f9f9f9;
         color: #000;
         border-color: transparent;
+    }
+`     
+export const Signout = styled.a`
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%
+    }
+    span{
+        font-size: 16px;
+        margin-left: 20px;
+        @media (max-width: 768px){
+            display: none
+        }
     }
 `     
 export default Header
