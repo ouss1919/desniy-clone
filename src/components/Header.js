@@ -1,6 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import logo from '../images/logo.svg'
+import home from '../images/home-icon.svg'
+import search from '../images/search-icon.svg'
+import movie from '../images/movie-icon.svg'
+import original from '../images/original-icon.svg'
+import series from '../images/series-icon.svg'
+import watchlist from '../images/watchlist-icon.svg'
 const Header = () => {
     return (
         <Container>
@@ -9,7 +15,12 @@ const Header = () => {
                     <img src={logo} alt=""/>
                 </Logo>
                 <Menu>
-                    Menu
+                    <a><img src={home} alt=""/><span>Home</span></a>
+                    <a><img src={search} alt=""/><span>Search</span></a>
+                    <a><img src={watchlist} alt=""/><span>Watchlist</span></a>
+                    <a><img src={original} alt=""/><span>Original</span></a>
+                    <a><img src={movie} alt=""/><span>Movie</span></a>
+                    <a><img src={series} alt=""/><span>Series</span></a>
                 </Menu>
             </Nav>
             <SignupButton>
@@ -44,13 +55,10 @@ export const Nav = styled.div`
     align-items: center;
 `
 
-
-
 export const Logo = styled.a`
     width: 100px;
     margin-right: 25px;
     height: auto;
-
     img{
         display: block;
         width: 100%
@@ -68,21 +76,67 @@ export const Menu = styled.div`
     @media (max-width: 768px){
         display: none;
     }
+
+a{
+        color: rgb(249, 249, 249);
+        display: flex;  
+        align-items: center;
+        padding: 0 12px;
+        cursor: pointer;
+        img{
+            height: 20px;
+            min-width: 20px;
+            width: 20px;
+            z-index: auto;
+        }
+        span{
+        letter-spacing: 1.42px;
+        position: relative;
+        line-height: 1.08px;
+        padding: 0 2px;
+        white-space: nowrap;
+        font-size: 16px;
+        &:before{
+            content: '';
+            background-color: rgb(249, 249, 249);
+            border-radius : 0 0 4px 4px ;
+            bottom: -12px;
+            height: 2px;
+            opacity: 0;
+            position: absolute;
+            right: 0;
+            left: 0;
+            transform-origin: left center;
+            transform: scaleX(0);
+            transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s;
+            visibility: hidden;
+            width: auto;
+        }
+    }
+    &:hover{
+        span:before{
+            transform: scaleX(1);
+            visibility: visible;
+            opacity: 1 !important;
+            }
+        }
+}
 `
-export const SignupButton = styled.button`
-    width: 100px;
-    background-color: transparent;
+export const SignupButton = styled.a`
+    padding: 8px 16px;
+    text-transform: uppercase;
+    background-color: rgba(0, 0, 0, 0.6);
     color: #f9f9f9;
-    height: 100%;
     letter-spacing: 1.5px;
-    font-size: 18px;
     color: hsla(0, 0, 95.3%, 1);
-    font-weight: 300;
     border-radius: 4px;
+    transition: all .2s;
     border: 1px solid #f9f9f9;
 
     &:hover{
-        background-color: #f9f9f9
+        background-color: #f9f9f9;
+        color: #000;
+        border-color: transparent;
     }
 `     
 export default Header
