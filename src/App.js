@@ -8,7 +8,6 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Header />
             <Login />
           </Route>
         </Switch>

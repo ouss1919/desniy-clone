@@ -3,10 +3,12 @@ import styled from 'styled-components'
 import backgroundImg from '../images/login-background.jpg'
 import headImg from '../images/cta-logo-one.svg'
 import footerImg from '../images/cta-logo-two.png'
+import Header from './Header'
 
 const Login = () => {
     return (
         <Container>
+            <Header />
             <Content>
                 <HeaderImg src={headImg} />
                 <ButtonContent>
