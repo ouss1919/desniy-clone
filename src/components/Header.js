@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import logo from '../images/logo.svg'
 import home from '../images/home-icon.svg'
@@ -16,24 +16,39 @@ const Header = () => {
     const history = useHistory();
     const username = useSelector(selectUserName)
     const userphoto = useSelector(selectUserPhoto)
+    const setUser = (user) => {
+        dispatch(setUserLoginDetails({
+            name : user.displayName,
+            email : user.email,
+            photo : user.photoURL
+        }))
+        history.replace('/home')
+    }
+    useEffect(() => {
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                setUser(user)
+            }else{
+                history.push('/')
+            }
+        })
+    }, [username])
     const handleAuth = () =>{
                 if (username){
+                    history.replace('/')
                     auth.signOut();
                     dispatch(
                         setSignOutState()
                     )
                 }else{
                     auth.signInWithPopup(provider).then((result) =>{
-                        dispatch(setUserLoginDetails({
-                            name : result.user.displayName,
-                            email : result.user.email,
-                            photo : result.user.photoURL
-                        }))
+                        setUser(result.user)
                     }).catch((error) => {
                         alert(error.message)
                     }
                     )
                 }
+
     }
     return (
         <Container>
@@ -55,9 +70,10 @@ const Header = () => {
                 }
             </Nav>
             {username ? 
-                <Signout onClick={handleAuth}>
+                <Signout>
                     <img src={userphoto} alt=""/>
                     <span>{username}</span>
+                    <DropDown  onClick={handleAuth}>Sign Out</DropDown>
                 </Signout>
                 : 
             <SignupButton onClick={handleAuth}>
@@ -165,7 +181,6 @@ export const SignupButton = styled.a`
     padding: 8px 16px;
     text-transform: uppercase;
     background-color: rgba(0, 0, 0, 0.6);
-    color: #f9f9f9;
     letter-spacing: 1.5px;
     color: hsla(0, 0, 95.3%, 1);
     border-radius: 4px;
@@ -178,7 +193,29 @@ export const SignupButton = styled.a`
         color: #000;
         border-color: transparent;
     }
-`     
+`
+export const DropDown = styled.div`
+    position: absolute;
+    top: 40px;
+    right: 50px;
+    width: 200px;
+    text-align: center;
+    background-color: rgb(19, 19, 19);
+    letter-spacing: 1.5px;
+    color: hsla(0, 0, 95.3%, 1);
+    border-radius :4px;
+    z-index: 6;
+    padding: 10px;
+    border: 1px solid rgb(151, 151, 151);
+    font-size: 14px;
+    letter-spacing: 3px;
+    opacity: 0;
+    @media (max-width: 768px){
+        right: 50px;
+        width: auto;
+        top: 30px;
+    }
+    `
 export const Signout = styled.a`
     display: flex;
     align-items: center;
@@ -195,5 +232,12 @@ export const Signout = styled.a`
             display: none
         }
     }
-`     
+    &:hover{
+        ${DropDown}{
+            opacity: 1;
+            transition-duration: 1s;
+        }
+    }
+`  
+
 export default Header
