@@ -3,12 +3,14 @@ import styled from 'styled-components'
 import bgImg from '../images/home-background.png'
 import Header from './Header'
 import ImageSlider from './ImageSlider'
+import Viewers from './Viewers'
 
 const Home = () => {
     return (
         <Container>
             <Header />
             <ImageSlider />
+            <Viewers />
         </Container>
     )
 }
