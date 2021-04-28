@@ -5,23 +5,43 @@ import viewer2 from '../images/viewers-marvel.png'
 import viewer3 from '../images/viewers-national.png'
 import viewer4 from '../images/viewers-pixar.png'
 import viewer5 from '../images/viewers-starwars.png'
+import video1 from '../videos/1564674844-disney.mp4'
+import video2 from '../videos/1564676115-marvel.mp4'
+import video3 from '../videos/1564676296-national-geographic.mp4'
+import video4 from '../videos/1564676714-pixar.mp4'
+import video5 from '../videos/1608229455-star-wars.mp4'
 const Viewers = () => {
     return (
         <Container>
             <Wrap>
                 <img src={viewer1} alt=""/>
+                <video autoPlay={true} loop={true} playsInline={true}>
+                    <source src={video1} type='video/mp4'/>
+                </video>
             </Wrap>
             <Wrap>
                 <img src={viewer2} alt=""/>
+                <video autoPlay={true} loop={true} playsInline={true}>
+                    <source src={video2} type='video/mp4'/>
+                </video>
             </Wrap>
             <Wrap>
                 <img src={viewer3} alt=""/>
+                <video autoPlay={true} loop={true} playsInline={true}>
+                    <source src={video3} type='video/mp4'/>
+                </video>
             </Wrap>
             <Wrap>
                 <img src={viewer4} alt=""/>
+                <video autoPlay={true} loop={true} playsInline={true}>
+                    <source src={video4} type='video/mp4'/>
+                </video>
             </Wrap>
             <Wrap>
                 <img src={viewer5} alt=""/>
+                <video autoPlay={true} loop={true} playsInline={true}>
+                    <source src={video5} type='video/mp4'/>
+                </video>
             </Wrap>
         </Container>
     )
@@ -33,7 +53,7 @@ const Wrap = styled.div`
     cursor: pointer;
     overflow: hidden;
     position: relative;
-    transition: all 250ms cubic-bezier(0.025, 0.46, 0.45, 0.94);
+    transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
     border: 3px solid rgba(249, 249, 249, 0.1);
     img{
         inset: 0px;
@@ -47,11 +67,29 @@ const Wrap = styled.div`
         z-index: 1;
         top: 0;
     }
+    video{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        opacity: 0;
+        z-index: 0;
+    }
+    &:hover{
+        box-shadow: rgb(0 0 0 / 80%) 0px 40px 58px -16px, rgb(0 0 0 / 72%) 0 30px 22px -10px;
+        transform: scaleX(1.05);
+        border-color: rgba(249, 249, 249, 0.8);
+        video{
+            opacity: 1;
+        }
+        img{
+            opacity: 0.5;
+        }
+    }
 `
 
 const Container = styled.div`
-    margin-top: 30px;
-    padding: 30px;
+    margin-top: 80px;
     display: grid;
     grid-gap: 25px;
     gap: 25px;
