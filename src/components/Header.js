@@ -22,12 +22,12 @@ const Header = () => {
             email : user.email,
             photo : user.photoURL
         }))
-        history.replace('/home')
     }
     useEffect(() => {
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 setUser(user)
+                history.replace('/home')
             }else{
                 history.push('/')
             }
@@ -43,22 +43,28 @@ const Header = () => {
                 }else{
                     auth.signInWithPopup(provider).then((result) =>{
                         setUser(result.user)
+                        history.replace('/home')
                     }).catch((error) => {
                         alert(error.message)
                     }
                     )
                 }
 
-    }
+            }
+            const navToHome = () =>{
+                if (username){
+                    history.push('/home')
+                }
+            }
     return (
         <Container>
             <Nav>
-                <Logo>
+                <Logo onClick={navToHome}>
                     <img src={logo} alt=""/>
                 </Logo>
                 {username ?            
                             <Menu>
-                                <a><img src={home} alt=""/><span>Home</span></a>
+                                <a onClick={navToHome}><img src={home} alt=""/><span>Home</span></a>
                                 <a><img src={search} alt=""/><span>Search</span></a>
                                 <a><img src={watchlist} alt=""/><span>Watchlist</span></a>
                                 <a><img src={original} alt=""/><span>Original</span></a>
